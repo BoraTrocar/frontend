@@ -1,0 +1,52 @@
+<div class="container" *ngIf="perfil$ | async as perfil">
+  <h1>Perfil</h1>
+  <mat-card class="card-perfil">
+    <div class="nome-titulo">
+      <h1>{{ perfil.nomeCompleto }}</h1>
+    </div>
+
+    <mat-card-content class="perfil">
+      <div class="user">
+        <img src="https://via.placeholder.com/150" alt="Foto de perfil" />
+        <p><span class="info">Nome de usuário:</span> {{ perfil.nickname }}</p>
+        <p><span class="info">Email:</span> {{ perfil.email }}</p>
+        <p>
+          <span class="info">Tipo de conta:</span>
+          {{ perfil.tipoConta }}
+        </p>
+        <h2 class="sub-titulo">Seus anuncios</h2>
+
+        <div class="teste">
+          <ng-container
+            *ngIf="perfil.anunciosPostados.length > 0; else anuncioVazio"
+          >
+            <div
+              class="anuncios-card"
+              *ngFor="let anuncio of perfil.anunciosPostados"
+            >
+              <mat-card-header style="width: 100%">
+                <mat-card-title><span>Titulo: </span>{{ anuncio.nomeLivro }}
+                </mat-card-title>
+                <section class="acoes">
+                  <mat-icon class="edit" (click)="alteraAnuncio(anuncio.idLivro)">edit</mat-icon>
+                  <mat-icon class="close" (click)="deletaAnuncio(anuncio.idLivro)">close</mat-icon>
+                </section>
+              </mat-card-header>
+
+              <section>
+                <p class="isbn"><span>ISBN:</span> {{ anuncio.isbn }}</p>
+                <p class="descricao">
+                  <span> Descrição:</span> {{ anuncio.descricao }}
+                </p>
+              </section>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #anuncioVazio>
+  <div class="">Nenhum anuncio postado</div>
+</ng-template>

@@ -1,0 +1,28 @@
+<h2>Chat</h2>
+<div class="container">
+  <mat-card class="chat-card" [formGroup]="formularioMensagem">
+    <mat-card-content>
+      <div class="mensagem-container">
+        <div
+          *ngFor="let mensagem of mensagens"
+          [ngClass]="{ sent: mensagem.enviado, received: !mensagem.enviado }"
+          class="mensagem"
+        >
+          <span class="usuario">{{ mensagem.usuario }}</span>
+          <p class="txt-mensagem">{{ mensagem.conteudo }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <input
+        matInput
+        formControlName="messageControl"
+        placeholder="Escreva uma mensagem"
+      />
+
+      <button color="primary" (click)="enviaMensagem()" aria-label="Name">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

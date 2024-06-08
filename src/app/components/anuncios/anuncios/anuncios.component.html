@@ -1,0 +1,57 @@
+<mat-form-field class="txt-pesquisa">
+  <mat-label>Pesquisar</mat-label>
+  <input matInput type="text" [(ngModel)]="txtPesquisa" />
+  <button
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    *ngIf="txtPesquisa"
+    (click)="limparPesquisa()"
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+  <button
+    matSuffix
+    mat-icon-button
+    aria-label="Search"
+    (click)="realizarPesquisa()"
+  >
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+
+<div class="container" *ngIf="anuncios$ | async as anuncios; else carregando">
+  <mat-card
+    (click)="abrirAnuncio(anuncio.idLivro)"
+    class="card"
+    *ngFor="let anuncio of anuncios"
+  >
+    <mat-card-header style="width: 100%">
+      <mat-card-title>{{ anuncio.nomeLivro }}</mat-card-title>
+    </mat-card-header>
+
+    <div class="img-livro">
+      <img
+        mat-card-image
+        [src]="'data:image/jpeg;base64,' + anuncio.imagemBlob"
+        alt="Imagem do livro anunciado"
+      />
+    </div>
+
+    <mat-card-content>
+      <p class="autor">Autor: {{ anuncio.autor }}</p>
+      <p class="genero">Categoria: {{ anuncio.categoria }}</p>
+      <p class="isbn">ISBN: {{ anuncio.isbn }}</p>
+      <p class="descricao"><span> Descrição:</span> {{ anuncio.descricao }}</p>
+      <!-- Img de perfil -->
+      <!-- <div mat-card-avatar class="img-perfil-anunciante"></div> -->
+      <p class="anunciante"><span> Anunciante:</span> {{ anuncio.usuario }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #carregando>
+  <div class="carregamento-postagens">
+    <mat-spinner style="height: 50px"></mat-spinner>
+  </div>
+</ng-template>

@@ -1,0 +1,81 @@
+.main {
+  background:
+    linear-gradient(144deg, rgba(126, 126, 126, 0.888) 0%, rgba(0, 0, 0, 0.9) 100%),
+    url(../../../../assets/livrosBG.jpg) center / cover;
+  height: 100vh;
+  margin-bottom: -5%;
+}
+
+.card-login {
+  width: 50%;
+  margin: 5% auto 0;
+  padding: 3% 5.5%;
+  box-sizing: border-box;
+  background: #fff; // Substituído o fundo pela cor diretamente aqui
+
+  h1 {
+    font-weight: 500;
+    font-size: 1.9rem;
+    text-align: center;
+    color: #000;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    mat-form-field {
+      background: #fff; // Substituído o fundo pela cor diretamente aqui
+    }
+
+    input {
+      width: 100%;
+    }
+  }
+
+  p {
+    margin-top: 0;
+  }
+
+  .esqueceu {
+    text-decoration: none;
+    font-size: 13px;
+    color: #333;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+
+    button {
+      width: 90%;
+      font-weight: 600;
+      font-size: 1rem;
+      height: 45px;
+      font-family: "lato";
+      background-color: #fff;
+
+      .material-icons {
+        vertical-align: -28%;
+      }
+
+      &:hover {
+        background-color: #2196f3;
+        transition: background-color 250ms;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .card-login {
+    width: 90%;
+  }
+}

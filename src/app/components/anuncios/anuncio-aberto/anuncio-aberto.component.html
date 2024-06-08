@@ -1,0 +1,57 @@
+<mat-card class="card-livro-aberto" *ngIf="anuncio$ | async as anuncio">
+  <mat-card-header>
+    <mat-card-title>{{ anuncio.nomeLivro }}</mat-card-title>
+    <mat-card-subtitle>{{ anuncio.autor }}</mat-card-subtitle>
+  </mat-card-header>
+  <img
+    mat-card-image
+    [src]="imagemURL"
+    alt="Capa do livro"
+  />
+
+  <mat-card-content>
+    <p><strong>ISBN:</strong>{{ anuncio.isbn }}</p>
+    <p><strong>Categoria:</strong>{{ anuncio.categoria }}</p>
+    <p><strong>Condição:</strong>{{ anuncio.condicao }}</p>
+    <p><strong>Descrição:</strong>{{ anuncio.descricao }}</p>
+    <p><strong>Anunciante:</strong>{{ anuncio.usuario }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="abrirChat()" mat-stroked-button color="primary" mat-button>
+      Chat
+    </button>
+  </mat-card-actions>
+
+  <section class="secao-comentarios">
+    <h3>Comentários</h3>
+    <mat-list *ngIf="comentario$ | async as comentarios">
+      <mat-list-item class="comentario" *ngFor="let comentario of comentarios">
+        <p>
+          <strong>{{ comentario.idUsuario }}</strong>
+        </p>
+        <p>{{ comentario.comentario }}</p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+
+    <form
+      class="form-comentario"
+      action="/submit-form"
+      method="post"
+      [formGroup]="comentarioFormulario"
+    >
+      <mat-form-field class="input-comentario">
+        <mat-label>Deixe seu comentario</mat-label>
+        <textarea formControlName="comentario" matInput></textarea>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        mat-button
+        (click)="realizarComentario()"
+      >
+        Comentar
+      </button>
+    </form>
+  </section>
+</mat-card>

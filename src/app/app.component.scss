@@ -1,0 +1,60 @@
+.mat-toolbar {
+  padding: 2% 0;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px #808080;
+  font-weight: 500;
+
+  .logo {
+    width: 50%;
+    text-decoration: none;
+    color: #fff;
+  }
+
+  img {
+    width: 45px;
+    margin-right: 2%;
+    vertical-align: middle;
+  }
+
+  .menu-principal {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.menu-toolbar {
+  display: flex;
+  gap: 10px;
+
+  button {
+    font-weight: 600;
+    gap: 5px;
+  }
+}
+
+.footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+@media screen and (max-width: 500px) {
+  .menu-toolbar {
+    button {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+}

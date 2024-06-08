@@ -1,0 +1,95 @@
+.txt-pesquisa {
+  width: 60%;
+  margin: 2% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  max-width: 20.5%;
+  box-shadow: 0 0 10px 0 #808080;
+  box-sizing: border-box;
+  font-family: "nunito";
+
+  .img-livro {
+    height: 380px;
+    width: 250px;
+    margin: 2% auto;
+
+    img {
+      width: 100%;
+      height: 100%;
+      padding: 5%;
+    }
+  }
+
+  .mat-mdc-card-header {
+    justify-content: center;
+  }
+
+  mat-card-header,
+  mat-card-title {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .autor,
+  .genero,
+  .isbn {
+    font-size: 12px;
+    line-height: 0.2rem;
+  }
+
+  .autor,
+  .genero,
+  .descricao,
+  .anunciante,
+  .isbn {
+    color: #707070;
+
+    span {
+      color: #0f0f0f;
+      font-weight: 700;
+      font-family: "lato";
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.005); /* Ajustado para 1.005, sem a unidade '100%', que é redundante */
+    transition: 200ms;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2% auto;
+  gap: 30px;
+  row-gap: 30px;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+
+    .card {
+      max-width: 70%;
+    }
+  }
+}
+
+.carregamento-postagens {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}

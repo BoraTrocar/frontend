@@ -1,0 +1,53 @@
+<main class="main">
+  <div>&nbsp;</div>
+  <mat-card class="card-login">
+    <h1>Login</h1>
+    <form [formGroup]="loginFormulario" (submit)="login()">
+      <mat-form-field appearance="outline" class="form-login">
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="email" autofocus />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="senha"
+        />
+
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <p><a href="#" class="esqueceu">Esqueceu a senha?</a></p>
+
+      <mat-card-actions>
+        <button
+          [disabled]="loginFormulario.invalid"
+          mat-stroked-button
+          color="primary"
+        >
+          Login
+          <span><i class="material-icons">login</i></span>
+        </button>
+
+        <button
+          [routerLink]="['/cadastroUsuario']"
+          routerLinkActive="router-link-active"
+          mat-stroked-button
+          color="primary"
+        >
+          Cadastre-se
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</main>

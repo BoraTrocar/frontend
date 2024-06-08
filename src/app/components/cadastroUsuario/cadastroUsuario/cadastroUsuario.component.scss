@@ -1,0 +1,52 @@
+.card-cadastro-usuario {
+  width: 40%;
+  margin: 10% auto;
+  padding: 1% 6.5% 5%;
+  box-sizing: border-box;
+
+  h1 {
+    font:
+      500 1.6rem/1.5 "lato",
+      sans-serif;
+    text-align: center;
+    color: #2196f3;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  small {
+    color: #808080;
+    font-size: 10.5px;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 40%;
+      font:
+        600 1rem "lato",
+        sans-serif;
+
+      &:hover {
+        background-color: #2196f3;
+        transition: background-color 0.25s;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .card-cadastro-usuario {
+    width: 90%;
+  }
+}

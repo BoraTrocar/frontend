@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://boratrocar.net:8090/'
+  apiUrl: 'https://boratrocar.net:8090/'
 };

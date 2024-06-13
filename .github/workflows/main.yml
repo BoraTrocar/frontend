@@ -107,4 +107,3 @@ jobs:
             cd ~/Docker
             docker-compose pull frontend
             docker-compose up -d frontend
-            docker image prune -f

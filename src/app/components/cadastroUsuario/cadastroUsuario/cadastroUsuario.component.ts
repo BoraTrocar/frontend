@@ -1,8 +1,11 @@
+import { ErrorHandlerService } from './../../../services/error-handler.service';
 import { CadastroUsuarioService } from '../../../services/cadastroUsuario.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Component({
   selector: 'app-cadastro',
@@ -16,7 +19,8 @@ export class CadastroUsuarioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private CadastroUsuarioService: CadastroUsuarioService,
     private router: Router,
-    private meta: Meta
+    private meta: Meta,
+    private errorHandlerService: ErrorHandlerService
   ) {
     this.meta.addTag({ name: 'description', content: 'Sua descrição aqui' });
   }
@@ -91,10 +95,14 @@ export class CadastroUsuarioComponent implements OnInit {
       cep,
       cidade,
       uf
-    ).subscribe(() => {
-      alert('Cadastro efetuado com sucesso');
-      this.router.navigateByUrl('/login');
-    });
+    )
+      .pipe(catchError((error) => this.errorHandlerService.handleError(error)))
+      .subscribe((response) => {
+        if (response) {
+          alert('Cadastro efetuado com sucesso');
+          this.router.navigateByUrl('/login');
+        }
+      });
   }
 
   testaCep() {

@@ -1,13 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from '../token/token.service';
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnunciosAlterarService {
-  private readonly API = `http://localhost:8090`;
-  constructor(private tokenService: TokenService, private http: HttpClient) {}
+  constructor(
+    private tokenService: TokenService,
+    private http: HttpClient,
+    private apiService: ApiService
+  ) {}
 
   altera(
     idLivro: number,
@@ -23,7 +27,7 @@ export class AnunciosAlterarService {
     });
 
     return this.http.put(
-      this.API + `/livro/alterar/${idLivro}`,
+    this.apiService.getBaseUrl() + `livro/alterar/${idLivro}`,
       {
         isbn,
         nomeLivro,

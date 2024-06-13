@@ -1,8 +1,11 @@
-# Use a imagem de um servidor web, por exemplo, Nginx
+FROM node:latest as angular
+WORKDIR /app
+COPY package.json /app
+RUN npm install
+COPY . .
+RUN npm run build
+
 FROM nginx:alpine
-
-# Copie os arquivos do seu projeto para o diretório do servidor web do Nginx
-COPY ./src /usr/share/nginx/html
-
-# Exponha a porta 80
-EXPOSE 80
+VOLUME [ "/var/cache/nginx" ]
+COPY --from=angular app/dist/bora-trocar-v2 /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf

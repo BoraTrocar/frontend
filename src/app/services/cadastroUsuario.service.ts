@@ -3,15 +3,18 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Cep } from '../models/Cep';
 import { Observable } from 'rxjs/internal/Observable';
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class CadastroUsuarioService {
-  private readonly API = `http://localhost:8090`;
   private readonly viaCEP = `https://viacep.com.br/ws`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiService
+  ) {}
 
   insereNoBanco(
     nomeUsuario: string,
@@ -23,7 +26,7 @@ export class CadastroUsuarioService {
     cidade: string,
     uf: string
   ) {
-    return this.http.post(this.API + `/usuario/cadastrar`, {
+    return this.http.post(this.apiService.getBaseUrl() + `usuario/cadastrar`, {
       nomeUsuario,
       email,
       nickname,

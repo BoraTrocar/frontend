@@ -1,14 +1,17 @@
 import { TokenService } from '../token/token.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class CadastroAnunciosService {
-  private readonly API = `http://localhost:8090`;
-
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(
+      private http: HttpClient,
+      private tokenService: TokenService,
+      private apiService: ApiService
+  ) {}
 
   insere(
     isbn: string,
@@ -36,7 +39,7 @@ export class CadastroAnunciosService {
     });
     headers.append('Content-Type', 'multipart/form-data');
 
-    return this.http.post(this.API + '/livro/cadastrar', formData, {
+    return this.http.post(this.apiService.getBaseUrl() + 'livro/cadastrar', formData, {
       headers,
       params: body,
     });

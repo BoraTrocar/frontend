@@ -1,14 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class PesquisaService {
-  private readonly API = `http://localhost:8090`;
-  constructor(private http: HttpClient) {}
+  constructor(
+      private http: HttpClient,
+      private apiService: ApiService
+  ) {}
 
   realizaPesquisa(inputUsuario: string) {
-    return this.http.post(this.API + `/livro/pesquisar/${inputUsuario}`, null);
+    return this.http.post(this.apiService.getBaseUrl() + `livro/pesquisar/${inputUsuario}`, null);
   }
 }

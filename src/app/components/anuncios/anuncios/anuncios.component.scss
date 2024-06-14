@@ -79,12 +79,18 @@ mat-card-actions {
   gap: 30px;
   row-gap: 30px;
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     flex-direction: column;
 
     .card {
       max-width: 70%;
     }
+  }
+}
+
+@media (max-width: 500px) {
+  .txt-pesquisa {
+    width: 90%;
   }
 }
 

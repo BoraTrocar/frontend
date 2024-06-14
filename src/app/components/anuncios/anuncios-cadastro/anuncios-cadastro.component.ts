@@ -1,3 +1,5 @@
+import { ErrorHandlerService } from './../../../services/error-handler.service';
+import { catchError } from 'rxjs/internal/operators/catchError';
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CadastroAnunciosService } from '../../../services/anuncios-cadastro.service';
@@ -28,6 +30,7 @@ export class AnunciosCadastroComponent {
   constructor(
     private formBuilder: FormBuilder,
     private cadastroAnunciosService: CadastroAnunciosService,
+    private errorHandlerService: ErrorHandlerService,
     private router: Router,
     private meta: Meta
   ) {
@@ -68,7 +71,18 @@ export class AnunciosCadastroComponent {
 
     if (imagemFile) {
       this.cadastroAnunciosService
-        .insere(isbn, nomeLivro, autor, condicao, categoria, descricao, imagemFile)
+        .insere(
+          isbn,
+          nomeLivro,
+          autor,
+          condicao,
+          categoria,
+          descricao,
+          imagemFile
+        )
+        .pipe(
+          catchError((error) => this.errorHandlerService.handleError(error))
+        )
         .subscribe(() => {
           alert('Livro cadastrado com sucesso');
           this.router.navigateByUrl('/anuncios');

@@ -11,6 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSidenavModule } from '@angular/material/sidenav'; // Import MatSidenavModule
+import { MatListModule } from '@angular/material/list'; // Import MatListModule
+import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
 
 import { LoginModule } from './components/login/login.module';
 import { CadastroUsuarioModule } from './components/cadastroUsuario/cadastroUsuario.module';
@@ -35,9 +38,12 @@ import { RodapeComponent } from './components/rodape/rodape.component';
     MatButtonModule,
     CadastroUsuarioModule,
     PerfilModule,
+    ChatModule,
     MatSelectModule,
     MatDividerModule,
-    ChatModule,
+    MatIconModule,
+    MatListModule,
+    MatSidenavModule,
   ],
   providers: [AuthGuard, AnunciosGuard],
   bootstrap: [AppComponent],

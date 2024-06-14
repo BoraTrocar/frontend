@@ -9,17 +9,16 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  emailUser = localStorage.getItem('emailUser');
+  opened = false;
+
   constructor(
     public loginService: LoginService,
     public perfilService: PerfilService,
     public router: Router,
     public route: ActivatedRoute
   ) {}
-  title = 'FalaMansa';
 
-  emailUser = localStorage.getItem('emailUser');
-
-  //Essa implementação esta errada, mas é oq tem para hoje
   deslogar(): void {
     this.loginService.deslogar();
     localStorage.removeItem('emailUser');
@@ -32,6 +31,5 @@ export class AppComponent {
 
   criaUmAnuncio() {
     this.router.navigate(['anuncios/novo'], { relativeTo: this.route });
-    //pega a rota atual como base e adiciona a nova
   }
 }

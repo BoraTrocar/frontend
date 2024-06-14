@@ -50,11 +50,44 @@
   flex: 1;
 }
 
-@media screen and (max-width: 500px) {
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.menu-button {
+  display: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 500px) {
+  .menu-button {
+    display: inline-block;
+  }
   .menu-toolbar {
-    button {
-      font-size: 12px;
-      font-weight: 500;
+    display: none;
+  }
+  .menu-toolbar button {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  mat-nav-list {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 2%;
+
+    span {
+      vertical-align: top;
+      margin-left: 5%;
     }
   }
 }

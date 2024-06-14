@@ -1,34 +1,104 @@
 <div class="container">
-  <div class="content">
-    <mat-toolbar color="primary">
-      <section class="menu-principal">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav class="sidenav" mode="over" [(opened)]="opened">
+      <mat-nav-list>
+        <a
+          mat-list-item
+          routerLink="/anuncios"
+          routerLinkActive="router-link-active"
+          (click)="sidenav.close()"
+        >
+          <i class="material-icons">comment</i>
+          <span> Anuncios</span>
+        </a>
+        <a
+          *ngIf="loginService.estaAutenticado()"
+          mat-list-item
+          (click)="criaUmAnuncio(); sidenav.close()"
+        >
+          <i class="material-icons">add</i>
+          <span>Crie um anuncio </span>
+        </a>
+        <a
+          *ngIf="loginService.estaAutenticado()"
+          mat-list-item
+          routerLink="/perfil"
+          routerLinkActive="router-link-active"
+          (click)="listaInfoPerfil(); sidenav.close()"
+        >
+          <i class="material-icons">person</i>
+          <span>
+            <ng-container *ngIf="emailUser; else userVazio">{{
+              emailUser
+            }}</ng-container></span
+          >
+        </a>
+        <a
+          *ngIf="!loginService.estaAutenticado()"
+          mat-list-item
+          routerLink="/login"
+          routerLinkActive="router-link-active"
+          (click)="sidenav.close()"
+        >
+          <i class="material-icons">person</i>
+          <ng-container *ngIf="emailUser; else userVazio">{{
+            emailUser
+          }}</ng-container>
+        </a>
+        <a
+          *ngIf="!emailUser"
+          mat-list-item
+          routerLink="/login"
+          routerLinkActive="router-link-active"
+          (click)="sidenav.close()"
+        >
+          <i class="material-icons">home</i>
+          <span>Login</span>
+        </a>
+        <a
+          *ngIf="emailUser"
+          mat-list-item
+          (click)="deslogar(); sidenav.close()"
+        >
+          <i class="material-icons">exit_to_app</i>
+          <span>Sair</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Versão pc -->
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+          <mat-icon>menu</mat-icon>
+        </button>
         <a class="logo" routerLink="/">
           <img src="../assets/books.svg" alt="" srcset="" />
           <span>Bora Trocar</span>
         </a>
+        <span class="spacer"></span>
+        <div class="menu-toolbar">
+          <button
+            mat-button
+            *ngIf="loginService.estaAutenticado()"
+            (click)="criaUmAnuncio()"
+          >
+            <i class="material-icons">add</i>
+            Crie um anuncio
+          </button>
 
-    <div class="menu-toolbar">
-      <button
-        mat-button
-        *ngIf="loginService.estaAutenticado()"
-        (click)="criaUmAnuncio()"
-      >
-        <i class="material-icons">add</i>
-        Crie um anuncio
-      </button>
-
-      <button
-        mat-button
-        *ngIf="loginService.estaAutenticado()"
-        routerLink="/perfil"
-        routerLinkActive="router-link-active"
-        (click)="listaInfoPerfil()"
-      >
-        <i class="material-icons">person</i>
-        <ng-container *ngIf="emailUser; else userVazio">
-          {{ emailUser }}
-        </ng-container>
-      </button>
+          <button
+            mat-button
+            *ngIf="loginService.estaAutenticado()"
+            routerLink="/perfil"
+            routerLinkActive="router-link-active"
+            (click)="listaInfoPerfil()"
+          >
+            <i class="material-icons">person</i>
+            <ng-container *ngIf="emailUser; else userVazio">
+              {{ emailUser }}
+            </ng-container>
+          </button>
 
           <button
             mat-button
@@ -66,15 +136,13 @@
             Sair
           </button>
         </div>
-      </section>
-    </mat-toolbar>
-
-    <!-- Fala que estamos usando controle de rotas -->
-    <router-outlet></router-outlet>
-
-    <ng-template #userVazio>
-      <div class="">Perfil</div>
-    </ng-template>
-  </div>
-  <app-rodape class="footer"></app-rodape>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
+
+<ng-template #userVazio>
+  <span>Perfil</span>
+</ng-template>
+<app-rodape class="footer"></app-rodape>

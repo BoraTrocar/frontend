@@ -1,16 +1,16 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Meta } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, switchMap } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
+import { Comentario } from 'src/app/models/Comentario';
+import { Perfil } from 'src/app/models/Perfil';
+import { LoginService } from 'src/app/services/login.service';
+import { Anuncio } from '../../../models/Anuncio';
+import { AnunciosService } from '../../../services/anuncios.service';
 import { ComentarioService } from './../../../services/comentario.service';
 import { PerfilService } from './../../../services/perfil.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AnunciosService } from '../../../services/anuncios.service';
-import { Component, Input } from '@angular/core';
-import { Anuncio } from '../../../models/Anuncio';
-import { Observable } from 'rxjs/internal/Observable';
-import { of, switchMap } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Perfil } from 'src/app/models/Perfil';
-import { Comentario } from 'src/app/models/Comentario';
-import { LoginService } from 'src/app/services/login.service';
-import { Meta } from '@angular/platform-browser';
 
 export interface MeuObjeto {
   token: string;
@@ -59,10 +59,9 @@ export class AnuncioAbertoComponent {
     this.anunciosService.pegarAnuncio(idN).subscribe((anuncio) => {
       this.anuncio$ = of(anuncio);
       console.log(anuncio);
-      console.log('Dados brutos da imagem:', anuncio.imagemBlob);
+      console.log('Dados brutos da imagem:', anuncio.imagem);
 
-      this.imagemURL = `data:image/jpeg;base64,${anuncio.imagemBlob}`;
-
+      this.imagemURL = anuncio.imagem;
     });
 
     this.comentarioFormulario = this.formBuilder.group({

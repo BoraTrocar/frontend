@@ -1,10 +1,10 @@
-import { ErrorHandlerService } from './../../../services/error-handler.service';
-import { catchError } from 'rxjs/internal/operators/catchError';
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CadastroAnunciosService } from '../../../services/anuncios-cadastro.service';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Meta } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { CadastroAnunciosService } from '../../../services/anuncios-cadastro.service';
+import { ErrorHandlerService } from './../../../services/error-handler.service';
 
 interface Condicao {
   value: string;

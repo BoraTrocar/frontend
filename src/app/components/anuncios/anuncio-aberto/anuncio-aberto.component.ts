@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, switchMap } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable, from, of, switchMap } from 'rxjs';
 import { Comentario } from 'src/app/models/Comentario';
 import { Perfil } from 'src/app/models/Perfil';
 import { LoginService } from 'src/app/services/login.service';
@@ -44,7 +43,6 @@ export class AnuncioAbertoComponent {
     this.meta.addTag({ name: 'description', content: 'Sua descrição aqui' });
     this.anuncio$ = null;
     this.comentario$ = null;
-    //this.comentario$ = comentarioService.listaComentarios(this.idN);
     this.perfil$ = perfilService.listaInfoPerfil();
   }
 
@@ -53,10 +51,10 @@ export class AnuncioAbertoComponent {
   }
 
   ngOnInit(): void {
-    var id = this.route.snapshot.paramMap.get('idLivro');
-    const idN = Number(id);
+    const id = this.route.snapshot.paramMap.get('idLivro');
+    this.idN = Number(id);
 
-    this.anunciosService.pegarAnuncio(idN).subscribe((anuncio) => {
+    this.anunciosService.pegarAnuncio(this.idN).subscribe((anuncio) => {
       this.anuncio$ = of(anuncio);
       console.log(anuncio);
       console.log('Dados brutos da imagem:', anuncio.imagem);
@@ -65,11 +63,15 @@ export class AnuncioAbertoComponent {
     });
 
     this.comentarioFormulario = this.formBuilder.group({
-      comentario: [[''], Validators.required],
+      comentario: ['', Validators.required],
     });
 
-    this.idN = idN;
-    this.comentario$ = this.comentarioService.listaComentarios(this.idN);
+    // Convert the Promise to an Observable
+    if (id) {
+      this.comentario$ = from(
+        this.comentarioService.obterComentarios(id)
+      ) as Observable<Comentario[]>;
+    }
   }
 
   realizarComentario() {
@@ -81,11 +83,9 @@ export class AnuncioAbertoComponent {
           switchMap((perfil) => {
             const autorComentario: string = perfil.nickname;
 
-            return this.comentarioService.insere(
-              comentario,
-              autorComentario,
-              this.idN
-            );
+            // Assuming you need to update the ComentarioService.insere method to accept autorComentario
+            // Otherwise, remove the autorComentario parameter below
+            return this.comentarioService.insere(comentario, this.idN);
           })
         )
         .subscribe(() => {

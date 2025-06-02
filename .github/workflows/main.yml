@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Define a versão do Node.js a ser utilizada
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
       # Passo 1: Faz o checkout do código-fonte do repositório

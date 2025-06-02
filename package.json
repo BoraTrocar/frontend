@@ -25,6 +25,9 @@
     "tslib": "^2.3.0",
     "zone.js": "^0.13.0"
   },
+  "resolutions": {
+  "entities": "2.2.0"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.1",
     "@angular/cli": "^16.2.8",

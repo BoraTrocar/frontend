@@ -1,6 +1,7 @@
 {
   "name": "bora-trocar-v2",
   "version": "0.0.0",
+  "type": "commonjs",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

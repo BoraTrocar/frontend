@@ -1,6 +1,7 @@
 {
   "name": "bora-trocar-v2",
   "version": "0.0.0",
+  "type": "commonjs",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,6 +25,9 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.13.0"
+  },
+  "resolutions": {
+  "entities": "2.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.1",

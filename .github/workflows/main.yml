@@ -32,6 +32,10 @@ jobs:
           # Usa cache npm para acelerar a instalação de dependências
           cache: 'npm'
 
+      # gambiarra apara corrigir problema de compatibilidade
+      - name: Force resolutions
+        run: npx npm-force-resolutions
+
       # Passo 3: Instalação das dependências do projeto
       - name: Instalar dependências do projeto
         run: npm install

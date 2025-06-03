@@ -36,6 +36,9 @@ jobs:
       - name: Force resolutions
         run: npx npm-force-resolutions
 
+      - name: atualizar dependencias
+        run: npm update
+        
       # Passo 3: Instalação das dependências do projeto
       - name: Instalar dependências do projeto
         run: npm install

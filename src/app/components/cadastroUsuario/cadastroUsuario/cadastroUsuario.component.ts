@@ -1,11 +1,9 @@
-import { ErrorHandlerService } from './../../../services/error-handler.service';
-import { CadastroUsuarioService } from '../../../services/cadastroUsuario.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/internal/operators/catchError';
+import { CadastroUsuarioService } from '../../../services/cadastroUsuario.service';
+import { ErrorHandlerService } from './../../../services/error-handler.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -14,15 +12,19 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 })
 export class CadastroUsuarioComponent implements OnInit {
   cadastroUsuarioFormulario: FormGroup = new FormGroup({});
+  maxDate: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private CadastroUsuarioService: CadastroUsuarioService,
+    private cadastroUsuarioService: CadastroUsuarioService,
     private router: Router,
     private meta: Meta,
     private errorHandlerService: ErrorHandlerService
   ) {
     this.meta.addTag({ name: 'description', content: 'Sua descrição aqui' });
+
+    const hoje = new Date();
+    this.maxDate = hoje.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
@@ -74,41 +76,75 @@ export class CadastroUsuarioComponent implements OnInit {
     });
   }
 
-  cadastrarUsuario() {
-    const nomeUsuario =
-      this.cadastroUsuarioFormulario.get('nomeUsuario')?.value;
-    const email = this.cadastroUsuarioFormulario.get('email')?.value;
-    const nickname = this.cadastroUsuarioFormulario.get('nickname')?.value;
-    const senha = this.cadastroUsuarioFormulario.get('senha')?.value;
-    const dataNascimento =
-      this.cadastroUsuarioFormulario.get('dataNascimento')?.value;
-    const cep = this.cadastroUsuarioFormulario.get('cep')?.value;
-    const cidade = this.cadastroUsuarioFormulario.get('cidade')?.value;
-    const uf = this.cadastroUsuarioFormulario.get('uf')?.value;
+  private formatarData(data: string): string {
+    if (!data) return '';
 
-    this.CadastroUsuarioService.insereNoBanco(
-      nomeUsuario,
-      email,
-      nickname,
-      senha,
-      dataNascimento,
-      cep,
-      cidade,
-      uf
-    )
-      .pipe(catchError((error) => this.errorHandlerService.handleError(error)))
-      .subscribe((response) => {
-        if (response) {
+    const dataObj = new Date(data);
+    const dia = dataObj.getDate().toString().padStart(2, '0');
+    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
+    const ano = dataObj.getFullYear();
+
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  cadastrarUsuario() {
+    if (this.cadastroUsuarioFormulario.invalid) {
+      console.error(
+        'Formulário inválido:',
+        this.cadastroUsuarioFormulario.errors
+      );
+      alert('Por favor, preencha todos os campos corretamente.');
+      return;
+    }
+
+    const dataNascimentoRaw =
+      this.cadastroUsuarioFormulario.get('dataNascimento')?.value;
+    const dataNascimentoFormatada = this.formatarData(dataNascimentoRaw);
+
+    const formData = {
+      nomeUsuario: this.cadastroUsuarioFormulario.get('nomeUsuario')?.value,
+      email: this.cadastroUsuarioFormulario.get('email')?.value,
+      nickname: this.cadastroUsuarioFormulario.get('nickname')?.value,
+      senha: this.cadastroUsuarioFormulario.get('senha')?.value,
+      dataNascimento: dataNascimentoFormatada, // Usando a data formatada
+      cep: this.cadastroUsuarioFormulario.get('cep')?.value,
+      cidade: this.cadastroUsuarioFormulario.get('cidade')?.value,
+      uf: this.cadastroUsuarioFormulario.get('uf')?.value,
+      latitude: '-23.557778',
+      longitude: '-46.646111',
+      imagemPerfil: 'testeURL',
+    };
+
+    console.log('Iniciando cadastro com dados:', formData);
+
+    this.cadastroUsuarioService
+      .insereNoBanco(
+        formData.imagemPerfil,
+        formData.nomeUsuario,
+        formData.email,
+        formData.nickname,
+        formData.senha,
+        formData.dataNascimento,
+        formData.latitude,
+        formData.longitude
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Cadastro realizado com sucesso:', response);
           alert('Cadastro efetuado com sucesso');
           this.router.navigateByUrl('/login');
-        }
+        },
+        error: (error) => {
+          console.error('Erro no cadastro:', error);
+          alert('Erro ao realizar cadastro: ' + error);
+        },
       });
   }
 
   testaCep() {
     const cep = this.cadastroUsuarioFormulario.get('cep')?.value;
     if (cep.length === 8) {
-      this.CadastroUsuarioService.verificaCEP(cep).subscribe((resposta) => {
+      this.cadastroUsuarioService.verificaCEP(cep).subscribe((resposta) => {
         this.cadastroUsuarioFormulario.patchValue({
           cidade: resposta.localidade,
           uf: resposta.uf,

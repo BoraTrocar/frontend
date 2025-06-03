@@ -1,11 +1,11 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs'; // Importe 'of' aqui
 import { PesquisaService } from 'src/app/services/pesquisa.service';
 import { Anuncio } from '../../../models/Anuncio';
 import { AnunciosService } from '../../../services/anuncios.service';
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs'; // Importe 'of' aqui
-import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../../services/login.service';
-import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-anuncios',
@@ -14,7 +14,7 @@ import { Meta } from '@angular/platform-browser';
 })
 export class AnunciosComponent implements OnInit {
   @Input() anuncios$: Observable<Anuncio[]>;
-  imagemURL: any | null = null;
+  imagem: any | null = null;
   txtPesquisa: string = '';
   pesquisaRealizada: boolean = false;
 

@@ -1,9 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/internal/operators/tap';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Cep } from '../models/Cep';
-import { Observable } from 'rxjs/internal/Observable';
-import { ApiService } from "./api.service";
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,39 +15,46 @@ import { ApiService } from "./api.service";
 export class CadastroUsuarioService {
   private readonly viaCEP = `https://viacep.com.br/ws`;
 
-  constructor(
-    private http: HttpClient,
-    private apiService: ApiService
-  ) {}
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
   insereNoBanco(
+    imagemPerfil: string,
     nomeUsuario: string,
     email: string,
     nickname: string,
     senha: string,
     dataNascimento: string,
-    cep: string,
-    cidade: string,
-    uf: string
-  ) {
-    return this.http.post(this.apiService.getBaseUrl() + `usuario/cadastrar`, {
+    latitude: string,
+    longitude: string
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    const url = this.apiService.getBaseUrl() + `usuario/cadastrar`;
+    const payload = {
+      imagemPerfil,
       nomeUsuario,
       email,
       nickname,
       senha,
       dataNascimento,
-      cep,
-      cidade,
-      uf,
-    });
+      latitude,
+      longitude,
+    };
+
+    return this.http
+      .post(url, payload, { headers })
+      .pipe(catchError(this.handleError));
   }
 
-  verificaCEP(cep: string): Observable<Cep> {
-    console.log('teste');
-    return this.http.get<Cep>(this.viaCEP + `/${cep}/json`).pipe(
-      tap((cepResponse: Cep) => {
-        console.log(cepResponse);
-      })
+  private handleError(error: HttpErrorResponse) {
+    return throwError(
+      'Erro na comunicação com o servidor. Por favor, tente novamente.'
     );
+  }
+  verificaCEP(cep: string): Observable<Cep> {
+    return this.http.get<Cep>(this.viaCEP + `/${cep}/json`).pipe();
   }
 }

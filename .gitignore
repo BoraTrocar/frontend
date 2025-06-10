@@ -1,42 +1,86 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# ================================
+# Angular e Frontend
+# ================================
+/dist/
+/tmp/
+/out-tsc/
+/bazel-out/
+/.angular/cache
+/aot/
+/.scannerwork/
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# ================================
+# Dependências e builds
+# ================================
+/node_modules/
+/.pnp
+.pnp.js
+/yarn.lock
+/package-lock.json
+npm-debug.log*
+yarn-error.log*
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# ================================
+# Configurações de Ambiente
+# ================================
+.env
+.env.local
+.env.*.local
+*.env
+.firebaserc  # Arquivo de configuração do Firebase
+firebase-debug.log
+firebase-export.json
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
-.vscode/*
+# ================================
+# IDEs e Editores
+# ================================
+/.idea
+/.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+.history/
+*.swp
+*.swo
+*.sublime*
+*.code-workspace
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
+# ================================
+# System Files
+# ================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# Testes e Cobertura
+# ================================
+/coverage/
+*.lcov
+/junit/
+/test-results/
+/cypress/screenshots/
+/cypress/videos/
+
+# ================================
+# Firebase
+# ================================
+.firebase/
+firebase-export-*.json
+
+# ================================
+# Miscelânea
+# ================================
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
 /libpeerconnection.log
 testem.log
 /typings
-
-# System files
-.DS_Store
-Thumbs.db
+/connect.lock
+.sass-cache/
+.cache/
+.tern-port

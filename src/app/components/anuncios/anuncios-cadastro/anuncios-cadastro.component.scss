@@ -1,10 +1,14 @@
 .cadastro-anuncio {
   width: 80%;
+  max-width: 600px;
   padding: 3%;
   margin: 3% auto;
 
   h1 {
     font: 500 1.6rem/1.5;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
   }
 
   form {
@@ -12,10 +16,108 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 5px;
+    row-gap: 15px; /* Aumentado para melhor espaçamento */
 
     mat-form-field {
-      width: 70%;
+      width: 100%; /* Mantém 100% em telas menores */
+      margin-bottom: 15px;
+
+      @media (min-width: 768px) {
+        width: 70%; /* 70% apenas em telas maiores */
+      }
+    }
+  }
+
+  .imagem-preview {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 200px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .upload-button {
+    display: block;
+    margin: 0 auto 20px auto;
+    min-width: 200px;
+
+    mat-icon {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    width: 100%;
+
+    button {
+      min-width: 150px;
+      padding: 8px 16px;
+
+      .spinner-icon {
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+        display: inline-flex;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 20px;
+    margin: 10px auto;
+
+    form mat-form-field {
+      width: 100%; /* Força 100% em telas menores */
+    }
+
+    .imagem-preview {
+      max-width: 150px;
+      max-height: 150px;
+    }
+
+    .upload-button {
+      min-width: 180px;
+      width: 100%;
+      max-width: 250px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px;
+
+    h1 {
+      font-size: 1.4rem;
+    }
+
+    .upload-button {
+      min-width: 160px;
+      font-size: 0.9rem;
+    }
+
+    mat-card-actions button {
+      min-width: 120px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
     }
   }
 }

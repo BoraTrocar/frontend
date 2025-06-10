@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+// anuncios-cadastro.component.ts
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { CadastroAnunciosService } from '../../../services/anuncios-cadastro.service';
+import { FirebaseStorageService } from '../../../services/firebase-storage.service'; // Novo serviço
 import { ErrorHandlerService } from './../../../services/error-handler.service';
 
 interface Condicao {
@@ -20,16 +22,20 @@ export class AnunciosCadastroComponent {
   cadastroAnunciosFormulario: FormGroup = new FormGroup({});
   valorSelecionado: string = '';
   imagemFile: File | undefined | null;
+  estaEnviando = false; // Controle de estado
+  @ViewChild('fileInput') fileInput!: ElementRef; // Adicione esta linha
 
   condicoes: Condicao[] = [
-    { value: 'novo', valorVisualizado: 'Novo' },
-    { value: 'usado', valorVisualizado: 'Usado' },
-    { value: 'avariado', valorVisualizado: 'Avariado' },
+    { value: 'NOVO', valorVisualizado: 'Novo' },
+    { value: 'USADO', valorVisualizado: 'Usado' },
+    { value: 'AVARIADO', valorVisualizado: 'Avariado' },
   ];
+  imagemPreview: string | ArrayBuffer | null | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
     private cadastroAnunciosService: CadastroAnunciosService,
+    private firebaseStorage: FirebaseStorageService, // Novo serviço
     private errorHandlerService: ErrorHandlerService,
     private router: Router,
     private meta: Meta
@@ -39,54 +45,79 @@ export class AnunciosCadastroComponent {
 
   ngOnInit(): void {
     this.cadastroAnunciosFormulario = this.formBuilder.group({
-      isbn: [[''], Validators.pattern(/^[0-9-]+$/)],
+      isbn: [[''], [Validators.required, Validators.pattern(/^[0-9-]+$/)]],
       nomeLivro: ['', [Validators.required]],
-      autor: [''],
+      autor: ['', [Validators.required]],
       condicao: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
-      descricao: [''],
+      descricao: ['', [Validators.required]],
     });
   }
 
-  selecionaImagem(fileInput: HTMLInputElement) {
-    const file = fileInput.files?.item(0);
-    if (file) {
-      console.log('Arquivo anexado:', file);
+  selecionaImagem(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.item(0);
+
+    if (file && file.type.startsWith('image/')) {
       this.imagemFile = file;
+
+      // Gerar preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagemPreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.imagemFile = null;
+      this.imagemPreview = null;
+      if (file) {
+        alert('Por favor, selecione um arquivo de imagem válido');
+      }
     }
   }
 
-  cadastrarAnuncio() {
-    const isbn = this.cadastroAnunciosFormulario.get('isbn')?.value;
-    const nomeLivro = this.cadastroAnunciosFormulario.get('nomeLivro')?.value;
-    const autor = this.cadastroAnunciosFormulario.get('autor')?.value;
-    const condicao = this.cadastroAnunciosFormulario.get('condicao')?.value;
-    const categoria = this.cadastroAnunciosFormulario.get('categoria')?.value;
-    const descricao = this.cadastroAnunciosFormulario.get('descricao')?.value;
-    const imagemFile = this.imagemFile;
+  async cadastrarAnuncio() {
+    if (this.cadastroAnunciosFormulario.invalid || this.estaEnviando) {
+      return;
+    }
 
-    console.log(imagemFile);
+    this.estaEnviando = true;
+    const formValues = this.cadastroAnunciosFormulario.value;
 
-    //const imagem = this.imagem ?? new File([], 'gambiarra');
+    try {
+      // 1. Upload da imagem se existir
+      let imagemUrl = '';
+      if (this.imagemFile) {
+        imagemUrl = await this.firebaseStorage.uploadImage(this.imagemFile);
+      }
 
-    if (imagemFile) {
+      // 2. Preparar payload
+      const payload = {
+        isbn: formValues.isbn,
+        nomeLivro: formValues.nomeLivro,
+        autor: formValues.autor,
+        condicao: formValues.condicao,
+        categoria: formValues.categoria,
+        descricao: formValues.descricao,
+        imagem: imagemUrl,
+      };
+
+      // 3. Enviar para API
       this.cadastroAnunciosService
-        .insere(
-          isbn,
-          nomeLivro,
-          autor,
-          condicao,
-          categoria,
-          descricao,
-          imagemFile
-        )
+        .insere(payload)
         .pipe(
-          catchError((error) => this.errorHandlerService.handleError(error))
+          catchError((error) => {
+            this.estaEnviando = false;
+            return this.errorHandlerService.handleError(error);
+          })
         )
         .subscribe(() => {
+          this.estaEnviando = false;
           alert('Livro cadastrado com sucesso');
           this.router.navigateByUrl('/anuncios');
         });
+    } catch (error) {
+      this.estaEnviando = false;
     }
   }
 }

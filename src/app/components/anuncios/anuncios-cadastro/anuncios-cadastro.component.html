@@ -1,56 +1,107 @@
 <mat-card class="cadastro-anuncio">
   <form
-    action="/submit-form"
-    method="post"
     [formGroup]="cadastroAnunciosFormulario"
+    (ngSubmit)="cadastrarAnuncio()"
   >
     <h1>Cadastre seu livro</h1>
-    <img src="https://via.placeholder.com/150" alt="Foto de perfil" />
 
+    <!-- Preview da imagem -->
+    <img
+      [src]="imagemPreview || 'https://via.placeholder.com/150'"
+      alt="Preview da imagem"
+      class="imagem-preview"
+    />
+
+    <!-- Input de arquivo com estilo oculto -->
     <input
       type="file"
       #fileInput
-      (change)="selecionaImagem(fileInput)"
+      (change)="selecionaImagem($event)"
       accept="image/*"
+      style="display: none"
     />
+
+    <!-- Botão customizado para acionar o input -->
+    <button
+      mat-stroked-button
+      color="primary"
+      type="button"
+      (click)="fileInput.click()"
+      class="upload-button"
+    >
+      <mat-icon>image</mat-icon>
+      {{ imagemFile ? "Alterar Imagem" : "Selecionar Imagem" }}
+    </button>
 
     <mat-form-field>
       <mat-label>ISBN</mat-label>
-      <input matInput type="text" formControlName="isbn" />
+      <input matInput type="text" formControlName="isbn" required />
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('isbn')?.invalid">
+        ISBN deve conter apenas números e hífens
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Titulo do livro</mat-label>
-      <input matInput type="text" formControlName="nomeLivro" />
+      <input matInput type="text" formControlName="nomeLivro" required />
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('nomeLivro')?.invalid">
+        Título é obrigatório
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Autor</mat-label>
-      <input matInput type="text" formControlName="autor" />
+      <input matInput type="text" formControlName="autor" required />
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('autor')?.invalid">
+        Autor é obrigatório
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Condição</mat-label>
-      <mat-select formControlName="condicao">
+      <mat-select formControlName="condicao" required>
         <mat-option *ngFor="let condicao of condicoes" [value]="condicao.value">
           {{ condicao.valorVisualizado }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('condicao')?.invalid">
+        Condição é obrigatória
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Categoria</mat-label>
-      <input matInput type="text" formControlName="categoria" />
+      <input matInput type="text" formControlName="categoria" required />
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('categoria')?.invalid">
+        Categoria é obrigatória
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Descreva o livro</mat-label>
-      <textarea rows="8" matInput formControlName="descricao"></textarea>
+      <textarea
+        rows="8"
+        matInput
+        formControlName="descricao"
+        required
+      ></textarea>
+      <mat-error *ngIf="cadastroAnunciosFormulario.get('descricao')?.invalid">
+        Descrição é obrigatória
+      </mat-error>
     </mat-form-field>
 
     <mat-card-actions>
-      <button (click)="cadastrarAnuncio()" mat-stroked-button color="primary">
-        Publicar anuncio
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="false || estaEnviando"
+      >
+        <span *ngIf="!estaEnviando">Publicar anuncio</span>
+        <span *ngIf="estaEnviando">
+          <mat-icon class="spinner-icon">hourglass_empty</mat-icon>
+          Enviando...
+        </span>
       </button>
     </mat-card-actions>
   </form>

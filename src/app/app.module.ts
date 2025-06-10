@@ -1,29 +1,30 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatSidenavModule } from '@angular/material/sidenav'; // Import MatSidenavModule
-import { MatListModule } from '@angular/material/list'; // Import MatListModule
-import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
-import { LoginModule } from './components/login/login.module';
 import { CadastroUsuarioModule } from './components/cadastroUsuario/cadastroUsuario.module';
-import { PerfilModule } from './components/perfil/perfil.module';
 import { ChatModule } from './components/chat/chat.module';
-import { AuthGuard } from './guards/auth-guard';
-import { AnunciosGuard } from './guards/anuncios-guard';
+import { LoginModule } from './components/login/login.module';
+import { PerfilModule } from './components/perfil/perfil.module';
 import { RodapeComponent } from './components/rodape/rodape.component';
+import { AnunciosGuard } from './guards/anuncios-guard';
+import { AuthGuard } from './guards/auth-guard';
 
-//Tudo que é modulo tem q estar aqui lembre-se disso.
+// Firebase imports corretos para NgModule
+
 @NgModule({
   declarations: [AppComponent, RodapeComponent],
   imports: [
@@ -45,7 +46,7 @@ import { RodapeComponent } from './components/rodape/rodape.component';
     MatListModule,
     MatSidenavModule,
   ],
-  providers: [AuthGuard, AnunciosGuard],
+  providers: [AuthGuard, AnunciosGuard], // SEM os providers do Firebase
   bootstrap: [AppComponent],
 })
 export class AppModule {}
